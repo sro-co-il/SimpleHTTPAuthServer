@@ -51,13 +51,13 @@ class SimpleHTTPAuthHandler(SimpleHTTPRequestHandler):
         ''' Present frontpage with user authentication. '''
         if self.headers.get('Authorization') is None:
             self.do_authhead()
-            self.wfile.write('no auth header received')
+            self.wfile.write(b'no auth header received')
         elif self.headers.get('Authorization') == 'Basic '+ self.KEY.decode("utf-8"):
             SimpleHTTPRequestHandler.do_GET(self)
         else:
             self.do_authhead()
-            self.wfile.write(self.headers.get('Authorization'))
-            self.wfile.write('not authenticated')
+            self.wfile.write(self.headers.get('Authorization').encode('utf-8'))
+            self.wfile.write(b'not authenticated')
 
 def serve_https(https_port=80, https=True, start_dir=None, handler_class=SimpleHTTPAuthHandler):
     ''' setting up server '''
